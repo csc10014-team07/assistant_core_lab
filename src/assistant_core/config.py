@@ -4,14 +4,16 @@ import os
 from pathlib import Path
 from assistant_core.errors import ConfigError
 
+
 class Settings(BaseModel):
     data_dir: Path = Path("data")
     llm_provider: str = "stub"
-    llm_api_key: str | None = Field(default=None, repr=False) # never printed
+    llm_api_key: str | None = Field(default=None, repr=False)  # never printed
     credit_rate_vnd: int = 450_000
     retake_multiplier: float = 1.5
     max_credits: int = 30
     log_level: str = "INFO"
+
 
 def load_settings(env_file: str | None = ".env") -> Settings:
     if env_file:
