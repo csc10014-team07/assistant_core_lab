@@ -1,4 +1,3 @@
-
 from assistant_core.router import route
 from assistant_core.models import Intent
 

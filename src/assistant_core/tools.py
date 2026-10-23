@@ -1,3 +1,8 @@
+import re
+
+from assistant_core.errors import InvalidRequest
+
+
 def parse_credits(text: str) -> tuple[int, int]:
     """Extract (credits, retake_credits) from 'fee for 18 credits and 2 retake'."""
     retake = re.search(r"(\d+)\s*retake", text)
@@ -9,6 +14,7 @@ def parse_credits(text: str) -> tuple[int, int]:
     if not others:
         raise InvalidRequest("How many credits?")
     return others[0], retake_n
+
 
 def tuition(credits: int, retake: int, rate: int, retake_multiplier: float, max_credits: int) -> int:
     if not 1 <= credits <= max_credits:
