@@ -4,6 +4,7 @@ import pytest
 from assistant_core.tools import parse_credits, tuition
 from assistant_core.errors import InvalidRequest
 
+
 def test_parse_with_retake():
     assert parse_credits("tuition for 18 credits and 2 retake") == (18, 2)
 
