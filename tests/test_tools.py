@@ -1,8 +1,8 @@
 # tests/test_tools.py
 import pytest
 
-from assistant_core.tools import parse_credits, tuition
 from assistant_core.errors import InvalidRequest
+from assistant_core.tools import parse_credits, tuition
 
 
 def test_parse_with_retake():
