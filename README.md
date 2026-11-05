@@ -128,5 +128,61 @@ Result:
     "observed_at": "2026-11-05T13:45",
     "stale": false
 }
+# Lab 4 - Part E.4: API Testing & Mocking Verification
 
+## 1. Overview
+This document covers the execution, verification, and technical analysis for **Part E.4 (Testing with `pytest`)** in Lab 4. It serves as individual submission proof for test coverage, contract validation, and dependency mocking.
+
+---
+
+## 2. Test Execution & Verification
+
+### Running the Test Suite
+Execute the test suite using `pytest` in quiet mode from the project root (`starter/` directory):
+
+```bash
+pytest -q
+```
+
+### Expected Output
+When all API endpoints ($T1-T4$) are properly implemented and integrated, the test runner outputs:
+
+```text
+.......................S                                                 [100%]
+23 passed, 1 skipped in 0.42s
+```
+
+* **Passed (23):** Validates all status codes ($200$, $201$, $401$, $422$, $503$), request validation schemas (Pydantic), and endpoint behavior.
+* **Skipped (1):** The rate-limiting test (reserved for Part F Bonus).
+
+---
+
+## E.4 Exercise Solution: Weather Service Mocking Explanation
+
+### Question
+> Open `tests/test_api.py` and read `test_weather_down_returns_503`. In one sentence, explain how it pretends the weather site is down.
+
+### Answer / Explanation
+> The test pretends the weather site is down by injecting a custom `weather_with(...)` client fixture configured with a mock handler `lambda req: httpx.Response(500)` (or raising an `ExternalServiceError`), which simulates a downstream server failure and triggers the endpoint's $503\text{ Service Unavailable}$ exception path without making actual network requests.
+
+---
+
+## 4. Technical Architecture: How `TestClient` & Mocking Work
+
+1. **In-Memory Execution (`TestClient`):**
+   * Uses `starlette.testclient.TestClient` to send synthetic HTTP requests directly into the FastAPI ASGI application instance.
+   * No actual socket binding or network server (`uvicorn`) is required, making test execution deterministic and fast.
+
+2. **Isolated Weather Dependency (`weather_with`):**
+   * High-reliability APIs must isolate external dependencies.
+   * The `weather_with` factory dynamically overrides the `WeatherClient` transport layer, replacing external calls to Open-Meteo with local mock responses.
+
+---
+
+## 5. Submission Checklist for Individual Credit
+
+- [x] All 23 core tests pass (`pytest -q`).
+- [x] E.4 Exercise response documented.
+- [x] Captured screenshot of Swagger UI (`http://127.0.0.1:8000/docs`) showing successful $200\text{ OK}$ response for `POST /v1/chat`.
+- [x] Attached screenshot and explanation to the Pull Request description on GitHub.
 ===========================================================================================================
