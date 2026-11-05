@@ -1,6 +1,6 @@
 PART E - Testing API
 
-E.3 With curl
+E.2 With curl
 Testing Progress:
 Step 1: Activate Virtual Environment. In my case i use the command: .venv\Scripts\activate
 Step 2: Run the serve:r uvicorn assistant_api.main:create_app --factory --reload
