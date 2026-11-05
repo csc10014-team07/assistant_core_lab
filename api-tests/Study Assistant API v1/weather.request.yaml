@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{base}}/v1/weather"
+method: GET
+order: 7000

@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{base}}/v1/feedback"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: '{"request_id": "abc123", "rating": 1}'
+order: 5000

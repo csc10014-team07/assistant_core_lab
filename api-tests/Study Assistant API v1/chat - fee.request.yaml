@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{base}}/v1/chat"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: '{"message": "tuition for 18 credits and 2 retake", "session_id": "demo"}'
+order: 2000

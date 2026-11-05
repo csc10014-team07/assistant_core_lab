@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{base}}/v1/feedback"
+method: GET
+headers:
+  X-API-Key: "{{admin_key}}"
+order: 6000
