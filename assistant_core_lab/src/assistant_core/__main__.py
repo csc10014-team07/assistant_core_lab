@@ -1,55 +1,40 @@
-import logging
+"""CLI:  python -m assistant_core "tuition for 18 credits and 2 retake" """
+
+from __future__ import annotations
+
 import sys
-import time
 
 from pydantic import ValidationError
 
 from assistant_core.config import load_settings
 from assistant_core.errors import AssistantError
-from assistant_core.knowledge import Handbook, OfficeDirectory
 from assistant_core.logging_setup import setup_logging
 from assistant_core.models import Message
-from assistant_core.responder import StubLLMResponder
-from assistant_core.service import AssistantService
-
-log = logging.getLogger("assistant_core")
+from assistant_core.service import build_service
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    argv = sys.argv[1:] if argv is None else argv
     try:
         settings = load_settings()
         setup_logging(settings.log_level)
-        offices = OfficeDirectory.from_csv(settings.data_dir / "offices.csv")
-        handbook = Handbook.from_json(settings.data_dir / "handbook.json")
+        service = build_service(settings)
     except AssistantError as exc:
         print(f"Startup error: {exc}", file=sys.stderr)
+        return 2
+    if not argv:
+        print('Usage: python -m assistant_core "your question"')
         return 1
-
-    service = AssistantService(settings, offices, handbook, StubLLMResponder())
-
-    text = " ".join(sys.argv[1:])
-    start = time.perf_counter()
     try:
-        r = service.handle(Message(text=text))
+        resp = service.handle(Message(text=" ".join(argv)))
     except ValidationError:
-        print("Please type a message (1-2000 characters).", file=sys.stderr)
+        print("Please type a question (1–2000 characters).")
         return 1
-    except AssistantError as exc:
-        print(f"Error: {exc}", file=sys.stderr)
-        return 1
-
-    log.info(
-        "handled",
-        extra={
-            "intent": r.intent.value,
-            "latency_ms": round((time.perf_counter() - start) * 1000, 1),
-            "session": "local",
-            "degraded": r.degraded,
-        },
-    )
-    print(r.answer)
+    print(resp.answer)
+    for src in resp.sources:
+        print(f"  source: {src.id} — {src.title}")
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())
