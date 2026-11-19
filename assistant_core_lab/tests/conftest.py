@@ -7,12 +7,19 @@ from assistant_core.knowledge import Handbook, OfficeDirectory
 from assistant_core.responder import StubLLMResponder
 from assistant_core.service import AssistantService
 
-DATA = Path(__file__).resolve().parent.parent / "data"
+DATA = Path(__file__).resolve().parents[1] / "data"
 
 
 @pytest.fixture
-def service():
-    settings = Settings()
-    offices = OfficeDirectory.from_csv(DATA / "offices.csv")
-    handbook = Handbook.from_json(DATA / "handbook.json")
-    return AssistantService(settings, offices, handbook, StubLLMResponder())
+def settings():
+    return Settings(data_dir=DATA)
+
+
+@pytest.fixture
+def service(settings):
+    return AssistantService(
+        settings,
+        OfficeDirectory.from_csv(DATA / "offices.csv"),
+        Handbook.from_json(DATA / "handbook.json"),
+        StubLLMResponder(),
+    )
