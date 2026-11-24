@@ -6,11 +6,26 @@ python -m venv .venv && source .venv/bin/activate     # Windows: .venv\Scripts\a
 pip install -r requirements.txt && pip install -e .
 cp .env.example .env
 ```
-## Run the API
-```
+## Run the Application (Lab 7 — C.1 Two Servers, Two Terminals)
+
+The assistant runs as two decoupled programs in separate terminals:
+
+### Terminal 1 — Backend (API)
+```bash
 uvicorn assistant_api.main:create_app --factory --reload
 ```
-Open http://127.0.0.1:8000/docs for the interactive OpenAPI documentation.
+- Port: `8000` (http://127.0.0.1:8000)
+- OpenAPI Documentation: http://127.0.0.1:8000/docs
+- Health check: http://127.0.0.1:8000/health
+
+### Terminal 2 — Frontend (Streamlit UI)
+```bash
+streamlit run ui/app.py
+```
+- Port: `8501` (http://localhost:8501)
+- If the API backend is not running, the page displays a red error notice at the top:
+  `"The assistant backend is not reachable. Start it with: uvicorn assistant_api.main:create_app --factory"`
+- Custom API endpoint (optional): set `ASSISTANT_API_URL=http://<host>:<port>` before launching Streamlit.
 
 ## API contract (v1)
 | Method | Path | Body | Success | Errors |
