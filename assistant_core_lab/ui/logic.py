@@ -33,4 +33,8 @@ def status_note(result: ChatResult) -> str | None:
     #   if result.escalate -> "I could not find this in the official documents. A staff member can help: Training Office, room I.101."
     #   elif result.degraded -> "Shown directly from the source document (the AI helper was unavailable)."
     #   else -> None
-    raise NotImplementedError("L2")
+    if result.escalate:
+        return "I could not find this in the official documents. A staff member can help: Training Office, room I.101."
+    if result.degraded:
+        return "Shown directly from the source document (the AI helper was unavailable)."
+    return None
