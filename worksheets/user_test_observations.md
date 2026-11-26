@@ -15,14 +15,3 @@
 | 2 | The tester searched for information about replacing a lost student card but initially looked in the wrong section. | They expected to find the replacement procedure under a clearly named student-card section. | The relevant information was not easy to locate or the wording was unclear. | Add a clear topic label such as "Lost Student Card" and provide the responsible office. |
 | 3 | The tester asked a follow-up question to clarify where to go or whom to contact. | They expected the assistant to provide a specific office and actionable next steps. | The answer lacked sufficiently specific contact or location information. | Include the office name, room/location, and contact instructions in the answer. |
 
-## The One Change We Made
-
-**Chosen misunderstanding:** The information about replacing a lost student card was difficult to locate.
-
-**Change implemented:** [Describe the actual change after implementing it.]
-
-**Commit link:** [Insert GitHub commit URL]
-
-**Before screenshot:** [Insert screenshot before the change]
-
-**After screenshot:** [Insert screenshot after the change]
