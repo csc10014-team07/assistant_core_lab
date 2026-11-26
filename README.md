@@ -227,3 +227,31 @@ pytest -q                          # unit + API tests (external API mocked)
 bash api-tests/curl_tests.sh       # manual tests against a running server
 ```
 Postman / Bruno: import `api-tests/study-assistant.postman_collection.json`.
+
+===========================================================================================================
+
+# Lab 7 — Part C.1: Two Servers, Two Terminals
+
+## 1. Running the System
+The assistant runs as two decoupled programs in separate terminals:
+
+### Terminal 1 — Backend API Server (port 8000)
+```bash
+cd assistant_core_lab
+python -m uvicorn assistant_api.main:create_app --factory --reload
+```
+- API Docs: http://127.0.0.1:8000/docs
+- Health check: http://127.0.0.1:8000/health
+
+### Terminal 2 — Frontend Streamlit UI (port 8501)
+```bash
+cd assistant_core_lab
+python -m streamlit run ui/app.py
+```
+- Streamlit UI: http://localhost:8501
+
+## 2. Health & Error States
+- If the backend API is not running, Streamlit displays a red notification at the top:
+  `"The assistant backend is not reachable. Start it with: uvicorn assistant_api.main:create_app --factory"`
+- Once the backend is started, `client.healthy()` returns `True`, the error banner disappears, and the UI can send chat messages to `/v1/chat`.
+
